@@ -11,7 +11,7 @@ class MovieLensDataSet(Dataset):
         self.movie_lens_dir = movie_lens_dir
         self.load_df(path=self.movie_lens_dir)
 
-    def load_df(self, path, train_ratio=0.8):
+    def load_df(self, path, train_ratio=0.8, num_debug=0):
         self.links_df = pd.read_csv(join(path, 'links.csv'))
         self.movies_df = pd.read_csv(join(path, "movies_v2.csv"))
         self.ratings_df = pd.read_csv(join(path, "ratings.csv"))
@@ -24,6 +24,10 @@ class MovieLensDataSet(Dataset):
 
         self.train_ratings_df = self.ratings_df.iloc[:num_train]
         self.test_ratings_df = self.ratings_df.iloc[num_train:]
+
+        if num_debug:
+            self.train_ratings_df = self.ratings_df.iloc[:num_debug]
+            self.test_ratings_df = self.ratings_df.iloc[:num_debug]
 
         print(f"number of ratings in train-set: {len(self.train_ratings_df)}")
         print(f"number of ratings in test-set: {len(self.test_ratings_df)}")

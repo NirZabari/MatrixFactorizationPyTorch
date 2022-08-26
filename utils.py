@@ -1,8 +1,9 @@
+import os
 import torch
-from dataset import MovieLensDataSet
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import numpy as np
+from dataset import MovieLensDataSet
 
 def init_embedding_vectors(dataloader, latent_dim):
     users_embedding = {userId: torch.rand(size=(1, latent_dim)).float().requires_grad_(True)
@@ -19,7 +20,7 @@ def update_embeddings_to_dict(d, keys, new_values):
         d[k] = new_values[i].detach()
 
 def get_dataloader(batch_size):
-    dataset = MovieLensDataSet()
+    dataset = MovieLensDataSet(movie_lens_dir=os.path.join(os.path.dirname(__file__), "movielens-100k"))
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     return dataloader
 
